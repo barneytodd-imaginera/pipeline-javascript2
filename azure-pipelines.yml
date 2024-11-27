@@ -38,7 +38,7 @@ stages:
         - task: CmdLine@2
           inputs:
             script: |
-              sleep 60
+              sleep 10
 
         - task: XplatGenerateReleaseNotes@4
           displayName: 'Generate Release Notes'
@@ -53,6 +53,11 @@ stages:
               * **Previous Build**: {{compareBuildDetails.buildNumber}}
 
               ## Associated Pull Requests 
+
+              Build Reason: {{Build.Reason}}
+              Pull Request ID: {{System.PullRequest.PullRequestId}}
+              Source Branch: {{System.PullRequest.SourceBranch}}
+              Target Branch: {{System.PullRequest.TargetBranch}}
 
               {{#if System.PullRequest.PullRequestId}}
                 Pull Request ID: {{System.PullRequest.PullRequestId}}
