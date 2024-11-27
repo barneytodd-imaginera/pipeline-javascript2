@@ -38,7 +38,7 @@ stages:
         - task: CmdLine@2
           inputs:
             script: |
-              sleep 5
+              sleep 60
 
         - task: XplatGenerateReleaseNotes@4
           displayName: 'Generate Release Notes'
