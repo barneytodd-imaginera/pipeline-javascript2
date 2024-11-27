@@ -53,6 +53,15 @@ stages:
               * **Previous Build**: {{compareBuildDetails.buildNumber}}
 
               ## Associated Pull Requests 
+
+              {{#if System.PullRequest.PullRequestId}}
+                Pull Request ID: {{System.PullRequest.PullRequestId}}
+                Source Branch: {{System.PullRequest.SourceBranch}}
+                Target Branch: {{System.PullRequest.TargetBranch}}
+              {{else}}
+                <p>No pull request information found</p>
+              {{/if}}
+
               {{#if pullRequests}}
                 {{#if pullRequests.length}}
                   {{#forEach pullRequests}}
