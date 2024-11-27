@@ -148,6 +148,12 @@ stages:
                 <p>No commits</p>
               {{/if}}
             # You can add more parameters here to customize the release note
+  
+        - script: |
+            echo "Pull Request ID: $(System.PullRequest.PullRequestId)"
+            echo "Source Branch: $(System.PullRequest.SourceBranch)"
+            echo "Target Branch: $(System.PullRequest.TargetBranch)"
+        displayName: 'Print PR Details'
 
         - publish: $(Build.ArtifactStagingDirectory)/releasenotes.md  # Publish the release notes as an artifact
           artifact: releaseNotes
