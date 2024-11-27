@@ -11,7 +11,7 @@ pr:
 trigger:
   branches:
     include:
-      - main  # This triggers the pipeline on push to 'main' branch, as already defined
+      - main  # This triggers the pipeline on push to 'main' branch, as already defined.
 
 pool:
   vmImage: 'ubuntu-latest'  # Use a Linux-based VM image (you can change this to 'windows-latest' or 'macos-latest' if needed)
