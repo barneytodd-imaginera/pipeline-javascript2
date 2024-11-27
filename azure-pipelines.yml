@@ -7,7 +7,6 @@ pr:
   branches:
     include:
       - main  # Trigger the pipeline on PRs targeting the 'main' branch.
-      - feature/*
 
 trigger:
   branches:
@@ -35,6 +34,11 @@ stages:
           inputs:
             command: 'install'  # Install dependencies from package.json
           displayName: 'Install dependencies'
+
+        - task: CmdLine@2
+          inputs:
+            script: |
+              timeout /t 5
 
         - task: XplatGenerateReleaseNotes@4
           displayName: 'Generate Release Notes'
@@ -148,12 +152,6 @@ stages:
                 <p>No commits</p>
               {{/if}}
             # You can add more parameters here to customize the release note
-  
-        - script: |
-            echo "Pull Request ID: $(System.PullRequest.PullRequestId)"
-            echo "Source Branch: $(System.PullRequest.SourceBranch)"
-            echo "Target Branch: $(System.PullRequest.TargetBranch)"
-            displayName: 'Print PR Details'
 
         - publish: $(Build.ArtifactStagingDirectory)/releasenotes.md  # Publish the release notes as an artifact
           artifact: releaseNotes
