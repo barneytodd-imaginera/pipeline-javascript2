@@ -40,6 +40,15 @@ stages:
             script: |
               sleep 10
 
+        - script: |
+            echo "Build Reason: $(Build.Reason)"
+            echo "PR ID: $(System.PullRequest.PullRequestId)"
+            echo "Source Branch: $(System.PullRequest.SourceBranch)"
+            echo "Target Branch: $(System.PullRequest.TargetBranch)"
+            echo "Full List of Available Variables:"
+            env  # This will list all environment variables available in the build context
+            displayName: 'Debug PR Information'
+
         - task: XplatGenerateReleaseNotes@4
           displayName: 'Generate Release Notes'
           inputs:
