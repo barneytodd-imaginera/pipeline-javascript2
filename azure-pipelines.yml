@@ -1,18 +1,17 @@
 # Node.js
-# Build a general Node.js project with npm
+# Build a general Node.js project with npm.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 pr:
   branches:
     include:
-      - main  # Trigger the pipeline on PRs targeting the 'main' branch
-      - feature/*
+      - main  # Trigger the pipeline on PRs targeting the 'main' branch..
 
 trigger:
   branches:
     include:
-      - main  # This triggers the pipeline on push to 'main' branch, as already defined
+      - main  # This triggers the pipeline on push to 'main' branch, as already defined.
 
 pool:
   vmImage: 'ubuntu-latest'  # Use a Linux-based VM image (you can change this to 'windows-latest' or 'macos-latest' if needed)
@@ -36,6 +35,20 @@ stages:
             command: 'install'  # Install dependencies from package.json
           displayName: 'Install dependencies'
 
+        - task: CmdLine@2
+          inputs:
+            script: |
+              sleep 10
+
+        - script: |
+            echo "Build Reason: $(Build.Reason)"
+            echo "PR ID: $(System.PullRequest.PullRequestId)"
+            echo "Source Branch: $(System.PullRequest.SourceBranch)"
+            echo "Target Branch: $(System.PullRequest.TargetBranch)"
+            echo "Full List of Available Variables:"
+            env  # This will list all environment variables available in the build context
+          displayName: 'Debug PR Information'
+
         - task: XplatGenerateReleaseNotes@4
           displayName: 'Generate Release Notes'
           inputs:
@@ -49,6 +62,20 @@ stages:
               * **Previous Build**: {{compareBuildDetails.buildNumber}}
 
               ## Associated Pull Requests 
+
+              Build Reason: {{Build.Reason}}
+              Pull Request ID: {{System.PullRequest.PullRequestId}}
+              Source Branch: {{System.PullRequest.SourceBranch}}
+              Target Branch: {{System.PullRequest.TargetBranch}}
+
+              {{#if System.PullRequest.PullRequestId}}
+                Pull Request ID: {{System.PullRequest.PullRequestId}}
+                Source Branch: {{System.PullRequest.SourceBranch}}
+                Target Branch: {{System.PullRequest.TargetBranch}}
+              {{else}}
+                <p>No pull request information found</p>
+              {{/if}}
+
               {{#if pullRequests}}
                 {{#if pullRequests.length}}
                   {{#forEach pullRequests}}
