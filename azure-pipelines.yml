@@ -51,8 +51,7 @@ stages:
               {{#if isFirst}} #### Features 
               {{/if}}
               {{#if (and (contains (lookup this.fields 'System.Tags') 'RN-Core') (contains (lookup this.fields 'System.Tags') 'RN-Feature'))}}
-              *  **{{lookup this.fields 'System.Title'}}**  
-              {{{lookup this.fields 'System.Description'}}}
+              *  **{{lookup this.fields 'System.Title'}}**  {{{lookup this.fields 'System.Description'}}}
               {{/if}}
               {{/forEach}}
 
@@ -60,8 +59,7 @@ stages:
               {{#if isFirst}} #### Enhancements
               {{/if}}
               {{#if (and (contains (lookup this.fields 'System.Tags') 'RN-Core') (contains (lookup this.fields 'System.Tags') 'RN-Enhancement'))}}
-              *  **{{lookup this.fields 'System.Title'}}**  
-              {{{lookup this.fields 'System.Description'}}}
+              *  **{{lookup this.fields 'System.Title'}}**  {{{lookup this.fields 'System.Description'}}}
               {{/if}}
               {{/forEach}}
 
@@ -69,8 +67,7 @@ stages:
               {{#if isFirst}} #### Bug Fixes 
               {{/if}}
               {{#if (and (contains (lookup this.fields 'System.Tags') 'RN-Core') (contains (lookup this.fields 'System.Tags') 'RN-Bugfix'))}}
-              *  **{{lookup this.fields 'System.Title'}}**  
-              {{{lookup this.fields 'System.Description'}}}
+              *  **{{lookup this.fields 'System.Title'}}**  {{{lookup this.fields 'System.Description'}}}
               {{/if}}   
               {{/forEach}}
 
@@ -80,8 +77,7 @@ stages:
               {{#if isFirst}} #### Features 
               {{/if}}
               {{#if (and (contains (lookup this.fields 'System.Tags') 'RN-Conduit') (contains (lookup this.fields 'System.Tags') 'RN-Feature'))}}
-              *  **{{lookup this.fields 'System.Title'}}**  
-              {{{lookup this.fields 'System.Description'}}}
+              *  **{{lookup this.fields 'System.Title'}}**  {{{lookup this.fields 'System.Description'}}}
               {{/if}}
               {{/forEach}}
 
@@ -89,8 +85,7 @@ stages:
               {{#if isFirst}} #### Enhancements
               {{/if}}
               {{#if (and (contains (lookup this.fields 'System.Tags') 'RN-Conduit') (contains (lookup this.fields 'System.Tags') 'RN-Enhancement'))}}
-              *  **{{lookup this.fields 'System.Title'}}**  
-              {{{lookup this.fields 'System.Description'}}}
+              *  **{{lookup this.fields 'System.Title'}}**  {{{lookup this.fields 'System.Description'}}}
               {{/if}}
               {{/forEach}}
 
@@ -98,8 +93,7 @@ stages:
               {{#if isFirst}} #### Bug Fixes 
               {{/if}}
               {{#if (and (contains (lookup this.fields 'System.Tags') 'RN-Conduit') (contains (lookup this.fields 'System.Tags') 'RN-Bugfix'))}}
-              *  **{{lookup this.fields 'System.Title'}}**  
-              {{{lookup this.fields 'System.Description'}}}
+              *  **{{lookup this.fields 'System.Title'}}**  {{{lookup this.fields 'System.Description'}}}
               {{/if}}   
               {{/forEach}}
 
@@ -109,8 +103,7 @@ stages:
               {{#if isFirst}} #### Features 
               {{/if}}
               {{#if (and (contains (lookup this.fields 'System.Tags') 'RN-Inigo') (contains (lookup this.fields 'System.Tags') 'RN-Feature'))}}
-              *  **{{lookup this.fields 'System.Title'}}**  
-              {{{lookup this.fields 'System.Description'}}}
+              *  **{{lookup this.fields 'System.Title'}}**  {{{lookup this.fields 'System.Description'}}}
               {{/if}}
               {{/forEach}}
 
@@ -118,8 +111,7 @@ stages:
               {{#if isFirst}} #### Enhancements
               {{/if}}
               {{#if (and (contains (lookup this.fields 'System.Tags') 'RN-Inigo') (contains (lookup this.fields 'System.Tags') 'RN-Enhancement'))}}
-              *  **{{lookup this.fields 'System.Title'}}**  
-              {{{lookup this.fields 'System.Description'}}}
+              *  **{{lookup this.fields 'System.Title'}}**  {{{lookup this.fields 'System.Description'}}}
               {{/if}}
               {{/forEach}}
 
@@ -127,8 +119,7 @@ stages:
               {{#if isFirst}} #### Bug Fixes 
               {{/if}}
               {{#if (and (contains (lookup this.fields 'System.Tags') 'RN-Inigo') (contains (lookup this.fields 'System.Tags') 'RN-Bugfix'))}}
-              *  **{{lookup this.fields 'System.Title'}}**  
-              {{{lookup this.fields 'System.Description'}}}
+              *  **{{lookup this.fields 'System.Title'}}**  {{{lookup this.fields 'System.Description'}}}
               {{/if}}   
               {{/forEach}}
 
@@ -138,8 +129,7 @@ stages:
               {{#if isFirst}} #### Features 
               {{/if}}
               {{#if (and (contains (lookup this.fields 'System.Tags') 'RN-Tamesis') (contains (lookup this.fields 'System.Tags') 'RN-Feature'))}}
-              *  **{{lookup this.fields 'System.Title'}}**  
-              {{{lookup this.fields 'System.Description'}}}
+              *  **{{lookup this.fields 'System.Title'}}**  {{{lookup this.fields 'System.Description'}}}
               {{/if}}
               {{/forEach}}
 
@@ -147,8 +137,7 @@ stages:
               {{#if isFirst}} #### Enhancements
               {{/if}}
               {{#if (and (contains (lookup this.fields 'System.Tags') 'RN-Tamesis') (contains (lookup this.fields 'System.Tags') 'RN-Enhancement'))}}
-              *  **{{lookup this.fields 'System.Title'}}**  
-              {{{lookup this.fields 'System.Description'}}}
+              *  **{{lookup this.fields 'System.Title'}}**  {{{lookup this.fields 'System.Description'}}}
               {{/if}}
               {{/forEach}}
 
@@ -156,8 +145,7 @@ stages:
               {{#if isFirst}} #### Bug Fixes 
               {{/if}}
               {{#if (and (contains (lookup this.fields 'System.Tags') 'RN-Tamesis') (contains (lookup this.fields 'System.Tags') 'RN-Bugfix'))}}
-              *  **{{lookup this.fields 'System.Title'}}**  
-              {{{lookup this.fields 'System.Description'}}}
+              *  **{{lookup this.fields 'System.Title'}}**  {{{lookup this.fields 'System.Description'}}}
               {{/if}}   
               {{/forEach}}
 
