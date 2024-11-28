@@ -35,20 +35,6 @@ stages:
             command: 'install'  # Install dependencies from package.json
           displayName: 'Install dependencies'
 
-        - task: CmdLine@2
-          inputs:
-            script: |
-              sleep 10
-
-        - script: |
-            echo "Build Reason: $(Build.Reason)"
-            echo "PR ID: $(System.PullRequest.PullRequestId)"
-            echo "Source Branch: $(System.PullRequest.SourceBranch)"
-            echo "Target Branch: $(System.PullRequest.TargetBranch)"
-            echo "Full List of Available Variables:"
-            env  # This will list all environment variables available in the build context
-          displayName: 'Debug PR Information'
-
         - task: XplatGenerateReleaseNotes@4
           displayName: 'Generate Release Notes'
           inputs:
@@ -56,125 +42,51 @@ stages:
             templateLocation: 'inline'  # Use an inline template for generating the release notes
             inlinetemplate: |
               ## Build {{buildDetails.buildNumber}}
-              * **Branch**: {{buildDetails.sourceBranch}}
-              * **Tags**: {{buildDetails.tags}}
-              * **Completed**: {{buildDetails.finishTime}}
-              * **Previous Build**: {{compareBuildDetails.buildNumber}}
 
-              ## Associated Pull Requests 
-
-              Build Reason: {{Build.Reason}}
-              Pull Request ID: {{System.PullRequest.PullRequestId}}
-              Source Branch: {{System.PullRequest.SourceBranch}}
-              Target Branch: {{System.PullRequest.TargetBranch}}
-
-              {{#if System.PullRequest.PullRequestId}}
-                Pull Request ID: {{System.PullRequest.PullRequestId}}
-                Source Branch: {{System.PullRequest.SourceBranch}}
-                Target Branch: {{System.PullRequest.TargetBranch}}
-              {{else}}
-                <p>No pull request information found</p>
-              {{/if}}
-
-              {{#if pullRequests}}
-                {{#if pullRequests.length}}
-                  {{#forEach pullRequests}}
-                    * **[{{this.pullRequestId}}]({{replace (replace this.url "_apis/git/repositories" "_git") "pullRequests" "pullRequest"}})** {{this.title}}
-                    * Associated Work Items
-                    {{#forEach this.associatedWorkitems}}
-                      {{#with (lookup_a_work_item ../../relatedWorkItems this.url)}}
-                        - [{{this.id}}]({{replace this.url "_apis/wit/workItems" "_workitems/edit"}}) - {{lookup this.fields 'System.Title'}}
-                      {{/with}}
-                    {{/forEach}}
-                    * Associated Commits (this includes commits on the PR source branch not associated directly with the build)
-                    {{#forEach this.associatedCommits}}
-                        - [{{this.commitId}}]({{this.remoteUrl}}) -  {{this.comment}}
-                    {{/forEach}}
-                  {{/forEach}}
-                {{else}}
-                  <p>No pull requests length</p>
-                {{/if}}
-              {{else}}
-                <p>No pull requests</p>
-              {{/if}}
-
-              # Global list of WI with PRs, parents and children
+              # Global list of WIs
               {{#forEach this.workItems}}
-              {{#if isFirst}}### WorkItems {{/if}}
-              *  **{{this.id}}**  {{lookup this.fields 'System.Title'}}
-                - **WIT** {{lookup this.fields 'System.WorkItemType'}}
-                - **Tags** {{lookup this.fields 'System.Tags'}}
-                - **Assigned** {{#with (lookup this.fields 'System.AssignedTo')}} {{displayName}} {{/with}}
-                - **Description** {{{lookup this.fields 'System.Description'}}}
-                - **PRs**
-              {{#forEach this.relations}}
-              {{#if (contains this.attributes.name 'Pull Request')}}
-              {{#with (lookup_a_pullrequest ../../pullRequests  this.url)}}
-                    - {{this.pullRequestId}} - {{this.title}}
-              {{/with}}
-              {{/if}}
-              {{/forEach}}
-                - **Parents**
-              {{#forEach this.relations}}
-              {{#if (contains this.attributes.name 'Parent')}}
-              {{#with (lookup_a_work_item ../../relatedWorkItems  this.url)}}
-                    - {{this.id}} - {{lookup this.fields 'System.Title'}}
-                    {{#forEach this.relations}}
-                    {{#if (contains this.attributes.name 'Parent')}}
-                    {{#with (lookup_a_work_item ../../../../relatedWorkItems  this.url)}}
-                      - {{this.id}} - {{lookup this.fields 'System.Title'}}
-                    {{/with}}
-                    {{/if}}
-                    {{/forEach}}
-              {{/with}}
-              {{/if}}
-              {{/forEach}}
-                - **Children**
-              {{#forEach this.relations}}
-              {{#if (contains this.attributes.name 'Child')}}
-              {{#with (lookup_a_work_item ../../relatedWorkItems  this.url)}}
-                    - {{this.id}} - {{lookup this.fields 'System.Title'}}
-              {{/with}}
-              {{/if}}
-              {{/forEach}}
-                - **Tested By**
-              {{#forEach this.relations}}
-              {{#if (contains this.attributes.name 'Tested By')}}
-              {{#with (lookup_a_work_item ../../testedByWorkItems  this.url)}}
-                    - {{this.id}} - {{lookup this.fields 'System.Title'}}
-              {{/with}}
-              {{/if}}
-              {{/forEach}}
+                  {{#if isFirst}}### Core WorkItems {{/if}}
+                  {{#if (contains (lookup this.fields 'System.Tags') 'RN-Core')}}
+                  *  **{{this.id}}**  {{lookup this.fields 'System.Title'}}
+                    - **HelpdeskRef** {{lookup this.fields 'Custom.HelpdeskRef'}}
+                    - **Description** {{{lookup this.fields 'System.Description'}}}
+                    - **Category** {{#if (contains (lookup this.fields 'System.Tags') 'RN-Bugfix')}} <p>Bug Fix</p> {{else if (contains (lookup this.fields 'System.Tags') 'RN-Feature')}} <p>Feature</p> {{else if (contains (lookup this.fields 'System.Tags') 'RN-Enhancement')}} <p>Enhancement</p> {{/if}
+                    - **ReleaseVersion**
+                  {{/if}}  
               {{/forEach}}
 
-              # Global list of CS 
-              {{#if commits}}
-                {{#if commits.length}}
-                  {{#forEach commits}}
-                    {{#if isFirst}}### Associated commits{{/if}}
-                    * ** ID{{this.id}}**
-                      -  **Message:** {{this.message}}
-                      -  **Commited by:** {{this.author.displayName}}
-                      -  **FileCount:** 
-                      {{#if this.changes}}
-                        {{#if this.changes.length}}
-                          {{this.changes.length}}
-                        {{/if}}
-                      {{else}}
-                        <p>No changes</p>
-                      {{/if}}
-                    {{#forEach this.changes}}
-                          -  **File path (TFVC or TfsGit):** {{this.item.path}}
-                          -  **File filename (GitHub):** {{this.filename}}
-                    {{/forEach}}
-                  {{/forEach}}
-                {{else}}
-                  <p>No commits length</p>
-                {{/if}}
-              {{else}}
-                <p>No commits</p>
-              {{/if}}
-            # You can add more parameters here to customize the release note
+              {{#forEach this.workItems}}
+                  {{#if isFirst}}### Conduit WorkItems {{/if}}
+                  {{#if (contains (lookup this.fields 'System.Tags') 'RN-Conduit')}}
+                  *  **{{this.id}}**  {{lookup this.fields 'System.Title'}}
+                    - **HelpdeskRef** {{lookup this.fields 'Custom.HelpdeskRef'}}
+                    - **Description** {{{lookup this.fields 'System.Description'}}}
+                    - **Category** {{#if (contains (lookup this.fields 'System.Tags') 'RN-Bugfix')}} <p>Bug Fix</p> {{else if (contains (lookup this.fields 'System.Tags') 'RN-Feature')}} <p>Feature</p> {{else if (contains (lookup this.fields 'System.Tags') 'RN-Enhancement')}} <p>Enhancement</p> {{/if}
+                    - **ReleaseVersion**
+                  {{/if}}  
+              {{/forEach}}
+
+              {{#forEach this.workItems}}
+                  {{#if isFirst}}### Inigo WorkItems {{/if}}
+                  {{#if (contains (lookup this.fields 'System.Tags') 'RN-Inigo')}}
+                  *  **{{this.id}}**  {{lookup this.fields 'System.Title'}}
+                    - **HelpdeskRef** {{lookup this.fields 'Custom.HelpdeskRef'}}
+                    - **Description** {{{lookup this.fields 'System.Description'}}}
+                    - **Category** {{#if (contains (lookup this.fields 'System.Tags') 'RN-Bugfix')}} <p>Bug Fix</p> {{else if (contains (lookup this.fields 'System.Tags') 'RN-Feature')}} <p>Feature</p> {{else if (contains (lookup this.fields 'System.Tags') 'RN-Enhancement')}} <p>Enhancement</p> {{/if}
+                    - **ReleaseVersion**
+                  {{/if}}  
+              {{/forEach}}
+
+              {{#forEach this.workItems}}
+                  {{#if isFirst}}### Tamesis WorkItems {{/if}}
+                  {{#if (contains (lookup this.fields 'System.Tags') 'RN-Tamesis')}}
+                  *  **{{this.id}}**  {{lookup this.fields 'System.Title'}}
+                    - **HelpdeskRef** {{lookup this.fields 'Custom.HelpdeskRef'}}
+                    - **Description** {{{lookup this.fields 'System.Description'}}}
+                    - **Category** {{#if (contains (lookup this.fields 'System.Tags') 'RN-Bugfix')}} <p>Bug Fix</p> {{else if (contains (lookup this.fields 'System.Tags') 'RN-Feature')}} <p>Feature</p> {{else if (contains (lookup this.fields 'System.Tags') 'RN-Enhancement')}} <p>Enhancement</p> {{/if}
+                    - **ReleaseVersion**
+                  {{/if}}  
+              {{/forEach}}
 
         - publish: $(Build.ArtifactStagingDirectory)/releasenotes.md  # Publish the release notes as an artifact
           artifact: releaseNotes
