@@ -61,7 +61,7 @@ stages:
                   *  **{{this.id}}**  {{lookup this.fields 'System.Title'}}
                     - **HelpdeskRef** {{lookup this.fields 'Custom.HelpdeskRef'}}
                     - **Description** {{{lookup this.fields 'System.Description'}}}
-                    - **Category** {{#if (contains (lookup this.fields 'System.Tags') 'RN-Bugfix')}} <p>Bug Fix</p> {{else if (contains (lookup this.fields 'System.Tags') 'RN-Feature')}} <p>Feature</p> {{else if (contains (lookup this.fields 'System.Tags') 'RN-Enhancement')}} <p>Enhancement</p> {{/if}
+                    - **Category** {{#if (contains (lookup this.fields 'System.Tags') 'RN-Bugfix')}} <p>Bug Fix</p> {{else}} {{#if (contains (lookup this.fields 'System.Tags') 'RN-Feature')}} <p>Feature</p> {{else}} {{#if (contains (lookup this.fields 'System.Tags') 'RN-Enhancement')}} <p>Enhancement</p> {{/if} {{/if}} {{/if}}
                     - **ReleaseVersion**
                   {{/if}}  
               {{/forEach}}
